@@ -1,23 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Kev'web</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kev'web Blog</title>
   <style>
-    nav a { margin: 10px; text-decoration: none; }
-    body { font-family: sans-serif; max-width: 700px; margin: auto; padding: 20px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+    .post-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+      transition: transform 0.2s;
+    }
+    .post-card:hover {
+      transform: translateY(-5px);
+    }
+    .post-card h2 {
+      margin-top: 0;
+      font-size: 1.4em;
+    }
+    .post-card a {
+      text-decoration: none;
+      color: #007acc;
+    }
+    .post-card a:hover {
+      text-decoration: underline;
+    }
+    .post-meta {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="project.html">Project</a>
-    <a href="blog.html">Blog</a>
-    <a href="https://github.com/EdelKevin" target="_blank">GitHub</a>
-    <a href="https://wandb.ai/edelkevin" target="_blank">WandB</a>
-    <a href="https://x.com/KevinLyuAI" target="_blank">X</a>
-  </nav>
+  <header>
+    <h1>Kev'web Blog</h1>
+    <p>Documenting my journey in agentic AI engineering and learning.</p>
+  </header>
 
-  <h1>👋 Welcome to Kev'web</h1>
-  <p>I'm Kevin Lyu. Here I post my thoughts in agentic AI, bet, and coding journey.</p>
+  <article class="post-card">
+    <h2><a href="posts/first-get-touch-with-leetcode.html">First Get Touch with Leetcode</a></h2>
+    <div class="post-meta">July 8, 2025 | 🚀 Personal Growth, Programming</div>
+    <p>Starting my structured Leetcode practice to build solid algorithm and data structure skills for AI engineering readiness. Sharing mindset shifts, plans, and first reflections...</p>
+  </article>
+
+  <article class="post-card">
+    <h2><a href="#">Upcoming: Understanding Reinforcement Learning from Scratch</a></h2>
+    <div class="post-meta">Coming Soon | AI Learning, Reinforcement Learning</div>
+    <p>A structured series to break down reinforcement learning fundamentals, from policy gradients to actor-critic, with practical Python examples aligned with agentic AI engineering goals.</p>
+  </article>
 </body>
 </html>
