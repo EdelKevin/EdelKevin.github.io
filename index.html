@@ -3,111 +3,572 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kev' Blog</title>
-
-<meta name="description" content="Document my learning notes.">
-<meta name="author" content="Kevin Lyu">
-<link rel="canonical" href="https://edelkevin.github.io/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.51b2420ff5ea1215cdf584af7ba59d5fea94201c33f25109d6448c7271631316.css" integrity="sha256-UbJCD/XqEhXN9YSve6WdX&#43;qUIBwz8lEJ1kSMcnFjExY=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://edelkevin.github.io/m_tech_kev.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="edelkevin.github.io/m_tech_kev-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="edelkevin.github.io/m_tech_kev-32x32.png">
-<link rel="apple-touch-icon" href="https://edelkevin.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://edelkevin.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://edelkevin.github.io/index.xml">
-<link rel="alternate" type="application/json" href="https://edelkevin.github.io/index.json">
-<link rel="alternate" hreflang="en" href="https://edelkevin.github.io/" />
+  <title>Kevin Lyu — Applied ML Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #0c0f14;
+      --surface: #141820;
+      --surface-hover: #1a1f2b;
+      --border: #232a38;
+      --text-primary: #e8eaf0;
+      --text-secondary: #8b92a5;
+      --accent: #4fc3f7;
+      --accent-dim: rgba(79, 195, 247, 0.12);
+      --accent-glow: rgba(79, 195, 247, 0.25);
+      --green: #66bb6a;
+      --orange: #ffa726;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f9f9f9;
-      color: #333;
-      max-width: 720px;
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── layout ── */
+    .container {
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 20px;
-      line-height: 1.6;
+      padding: 0 28px;
     }
-    header {
-      text-align: center;
-      margin-bottom: 40px;
+
+    /* ── hero ── */
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
     }
-    header h1 {
-      margin: 0;
-      font-size: 2em;
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 15%;
+      right: -120px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      opacity: 0.4;
     }
-    .post-card {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
       margin-bottom: 20px;
-      transition: transform 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
     }
-    .post-card:hover {
-      transform: translateY(-5px);
+
+    .hero-name {
+      font-family: var(--sans);
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.4s;
     }
-    .post-card h2 {
-      margin-top: 0;
-      font-size: 1.4em;
+
+    .hero-tagline {
+      font-size: 1.18rem;
+      color: var(--text-secondary);
+      max-width: 540px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.6s;
     }
-    .post-card a {
+
+    .hero-tagline strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.8s;
+    }
+
+    .hero-link {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      padding: 10px 20px;
+      border-radius: 6px;
       text-decoration: none;
-      color: #007acc;
+      transition: all 0.25s ease;
     }
-    .post-card a:hover {
-      text-decoration: underline;
+
+    .hero-link--primary {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 500;
     }
-    .post-meta {
-      font-size: 0.9em;
-      color: #666;
+    .hero-link--primary:hover {
+      box-shadow: 0 0 24px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+
+    .hero-link--secondary {
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .hero-link--secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── section titles ── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
       margin-bottom: 10px;
     }
 
-    #workflow {
-  margin-top: 40px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-#workflow h2 {
-  margin-bottom: 15px;
-  font-size: 1.5em;
-  color: #007acc;
-}
+    .section-title {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 40px;
+    }
 
+    /* ── projects ── */
+    .projects {
+      padding: 80px 0;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 20px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      min-height: 420px;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover {
+      border-color: rgba(79, 195, 247, 0.3);
+      background: var(--surface-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    .project-card:hover::before { opacity: 1; }
+
+    .project-flowchart {
+      width: 100%;
+      flex-grow: 1;
+      min-height: 180px;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 14px;
+      color: var(--text-secondary);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      background: rgba(255,255,255,0.015);
+    }
+
+    .project-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 18px;
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .project-card:nth-child(2) .project-icon { background: rgba(102,187,106,0.12); color: var(--green); }
+    .project-card:nth-child(3) .project-icon { background: rgba(255,167,38,0.12); color: var(--orange); }
+    .project-card:nth-child(4) .project-icon { background: rgba(171,130,255,0.12); color: #ab82ff; }
+
+    .project-title {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .project-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text-secondary);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* ── resume ── */
+    .resume-section {
+      padding: 60px 0 100px;
+      border-top: 1px solid var(--border);
+    }
+
+    .resume-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .resume-col h3 {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .resume-item {
+      margin-bottom: 24px;
+      padding-left: 16px;
+      border-left: 2px solid var(--border);
+    }
+
+    .resume-item:hover {
+      border-left-color: var(--accent);
+    }
+
+    .resume-item .role {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+
+    .resume-item .org {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .resume-item .period {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .skill-group {
+      margin-bottom: 20px;
+    }
+
+    .skill-group-label {
+      font-weight: 500;
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+    }
+
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pill {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+
+    .pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .pill--highlight {
+      background: var(--accent-dim);
+      border-color: rgba(79,195,247,0.25);
+      color: var(--accent);
+    }
+
+    /* ── footer ── */
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── responsive ── */
+    @media (max-width: 960px) {
+      .project-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .project-grid { grid-template-columns: 1fr; }
+      .resume-content { grid-template-columns: 1fr; }
+      .hero { min-height: 80vh; }
+    }
   </style>
 </head>
-
-
-
 <body>
-  <header>
-    <h1>Kev' Blog</h1>
-    <p>Documenting my journey in agentic AI engineering and learning. Industrial-Grade Execution</p>
-  </header>
-  <section id="workflow">
-  <h2>My Workflow</h2>
-  <iframe 
-    src="https://deep-friend-fda.notion.site/ebd/1f780d1a03c38032bac4c394e1df22a4?v=1f780d1a03c380b6b390000c3a0e4304" 
-    style="width:100%; height:600px; border:none; border-radius:8px;" 
-    allowfullscreen>
-  </iframe>
-  
-</section>
 
-  <article class="post-card">
-    <h2><a href="https://edelkevin.github.io/posts/first-get-touch-with-leetcode.html">First Get Touch with Leetcode</a></h2>
-    <div class="post-meta">July 8, 2025 | 🚀 Personal Growth, Programming</div>
-    <p>Starting my structured Leetcode practice to build solid algorithm and data structure skills for AI engineering readiness. Sharing mindset shifts, plans, and first reflections...</p>
-  </article>
+  <!-- ════ HERO ════ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-label">Applied ML Engineer</div>
+      <h1 class="hero-name">Kevin Lyu</h1>
+      <p class="hero-tagline">
+        I build <strong>production AI systems</strong> — from RAG pipelines and LLM integrations
+        to scalable Python backends that serve them.
+        UMich MEng · Python · AWS · LLM APIs
+      </p>
+      <div class="hero-links">
+        <a href="https://linkedin.com/in/" target="_blank" class="hero-link hero-link--secondary">LinkedIn</a>
+        <a href="https://github.com/" target="_blank" class="hero-link hero-link--secondary">GitHub</a>
+      </div>
+    </div>
+  </section>
 
-  <article class="post-card">
-    <h2><a href="#">Upcoming: Understanding Reinforcement Learning from Scratch</a></h2>
-    <div class="post-meta">Coming Soon | AI Learning, Reinforcement Learning</div>
-    <p>A structured series to break down reinforcement learning fundamentals, from policy gradients to actor-critic, with practical Python examples aligned with agentic AI engineering goals.</p>
-  </article>
+  <!-- ════ PROJECTS ════ -->
+  <section class="projects container reveal" id="projects">
+    <div class="section-label">What I've Built</div>
+    <h2 class="section-title">Projects</h2>
+    <div class="project-grid">
+
+      <a class="project-card" href="#">
+        <div class="project-icon">⚡</div>
+        <div class="project-title">Project 1 — Title</div>
+        <p class="project-desc">Brief description here.</p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">RAG</span>
+          <span class="tag">Claude API</span>
+        </div>
+        <div class="project-flowchart">flowchart placeholder</div>
+      </a>
+
+      <a class="project-card" href="#">
+        <div class="project-icon">🔗</div>
+        <div class="project-title">Project 2 — Title</div>
+        <p class="project-desc">Brief description here.</p>
+        <div class="project-tags">
+          <span class="tag">Django</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">Docker</span>
+        </div>
+        <div class="project-flowchart">flowchart placeholder</div>
+      </a>
+
+      <a class="project-card" href="#">
+        <div class="project-icon">📊</div>
+        <div class="project-title">Project 3 — Title</div>
+        <p class="project-desc">Brief description here.</p>
+        <div class="project-tags">
+          <span class="tag">OpenAI API</span>
+          <span class="tag">Embeddings</span>
+          <span class="tag">Redis</span>
+        </div>
+        <div class="project-flowchart">flowchart placeholder</div>
+      </a>
+
+      <a class="project-card" href="#">
+        <div class="project-icon">🛠</div>
+        <div class="project-title">Project 4 — Title</div>
+        <p class="project-desc">Brief description here.</p>
+        <div class="project-tags">
+          <span class="tag">AWS</span>
+          <span class="tag">Terraform</span>
+          <span class="tag">Prometheus</span>
+        </div>
+        <div class="project-flowchart">flowchart placeholder</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ════ RESUME ════ -->
+  <section class="resume-section container reveal" id="resume">
+    <div class="section-label">Background</div>
+    <h2 class="section-title">Résumé</h2>
+    <div class="resume-content">
+
+      <div class="resume-col">
+        <h3>Experience</h3>
+        <div class="resume-item">
+          <div class="role">Your Role Title</div>
+          <div class="org">Company Name</div>
+          <div class="period">2024 — Present</div>
+        </div>
+        <div class="resume-item">
+          <div class="role">Your Previous Role</div>
+          <div class="org">Company Name</div>
+          <div class="period">2023 — 2024</div>
+        </div>
+
+        <h3 style="margin-top:36px;">Education</h3>
+        <div class="resume-item">
+          <div class="role">MEng</div>
+          <div class="org">University of Michigan</div>
+          <div class="period">Graduation Year</div>
+        </div>
+      </div>
+
+      <div class="resume-col">
+        <h3>Core Skills</h3>
+
+        <div class="skill-group">
+          <div class="skill-group-label">ML / AI</div>
+          <div class="skill-pills">
+            <span class="pill pill--highlight">RAG Systems</span>
+            <span class="pill pill--highlight">LLM APIs</span>
+            <span class="pill pill--highlight">Prompt Engineering</span>
+            <span class="pill">Embeddings</span>
+            <span class="pill">Vector Databases</span>
+            <span class="pill">LangChain</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-group-label">Backend & Infra</div>
+          <div class="skill-pills">
+            <span class="pill">Python</span>
+            <span class="pill">Django</span>
+            <span class="pill">PostgreSQL</span>
+            <span class="pill">Celery</span>
+            <span class="pill">Redis</span>
+            <span class="pill">AWS</span>
+            <span class="pill">Docker</span>
+            <span class="pill">Terraform</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-group-label">Monitoring & Ops</div>
+          <div class="skill-pills">
+            <span class="pill">Prometheus</span>
+            <span class="pill">Grafana</span>
+            <span class="pill">CI/CD</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════ FOOTER ════ -->
+  <footer>
+    <div class="container">
+      <p>Kevin Lyu · <a href="mailto:your@email.com">your@email.com</a></p>
+    </div>
+  </footer>
+
+  <!-- ── scroll reveal ── -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
 </body>
 </html>
